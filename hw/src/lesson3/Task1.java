@@ -2,10 +2,9 @@ package lesson3;
 
 import java.util.*;
 
-public class four {
+public class Task1 {
     public static void main(String[] args) {
 
-        //Задание 1
         //создаем массив с повторяющимися строками
 
         List<String> myArray = Arrays.asList("мама",
@@ -48,7 +47,6 @@ public class four {
         //Посчитать, сколько раз встречается каждое слово
         Map<String, Integer> myMap = new HashMap<>();
 
-
         for (String myWord : myArray) {
             Integer counter = myMap.get(myWord);
             if(counter == null) {
@@ -61,9 +59,38 @@ public class four {
 
         //{дедушка=1, сын=2, попугай=1, мама=1, бабушка=1, собачка=1, дочка=2, папа=1}
 
-        //задание 2
+        //второй менее эффективный вариант
 
-        Map<String, List<String>> contacts = new HashMap<>();
+        Map<String, Integer> myMap2 = new HashMap<>();
+
+        for (String myWord : myArray) {
+            Integer counter = 0;
+//            Collections.frequency();
+            for (String myWord2 : myArray) {
+                if (myWord.equals(myWord2)){
+                    counter ++;
+                }
+            }
+
+                myMap2.put(myWord, counter);
+        }
+
+        System.out.println(myMap2.toString());
+
+        //{дедушка=1, сын=2, попугай=1, мама=1, бабушка=1, собачка=1, дочка=2, папа=1}
+
+        //способ преподователя
+
+        Map<String, Integer> myMap3 = new HashMap<>();
+        for (String myWord : myArray) {
+            myMap3.putIfAbsent(myWord, 0);
+//            myMap3.computeIfPresent(myWord, (key, val) -> val +1);
+            int cnt = myMap3.get(myWord);
+            myMap3.put(myWord, (cnt+1));
+
+        }
+
+        System.out.println(myMap3.toString());
 
     }
 }
