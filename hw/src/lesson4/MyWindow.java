@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MyWindow extends JFrame {
+
     public MyWindow() {
         setTitle("Test Window");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -39,6 +40,8 @@ public class MyWindow extends JFrame {
         });
 
         setVisible(true);
+
+        //вроде все норм
 
     }
 }
