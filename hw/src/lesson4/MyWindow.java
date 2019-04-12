@@ -49,7 +49,6 @@ public class MyWindow extends JFrame {
 
         setVisible(true);
 
-        //вроде все норм
-
+        // будем работать дальше
     }
 }
