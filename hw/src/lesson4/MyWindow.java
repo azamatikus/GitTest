@@ -12,6 +12,7 @@ public class MyWindow extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setBounds(300, 300, 400, 400);
         JButton jbs = new JButton("SEND");
+        jbs.setBounds(0,0,30,10);
 
         setLayout(new BorderLayout());   // выбор компоновщика элементов
 
@@ -19,9 +20,13 @@ public class MyWindow extends JFrame {
         JLabel jlab = new JLabel("Please enter your first message...", SwingConstants.LEFT);
         jlab.setVerticalAlignment(SwingConstants.TOP);
 
-        add(jbs, BorderLayout.EAST);  // добавление кнопки на форму
+        JPanel p = new JPanel(new GridLayout(2, 1, 4, 4));
+        p.add(field);
+        p.add(jbs);
+
+//        add(jbs, BorderLayout.EAST);  // добавление кнопки на форму
         add(jlab, BorderLayout.CENTER);
-        add(field, BorderLayout.SOUTH);
+        add(p, BorderLayout.SOUTH);
 
         jbs.addActionListener(new ActionListener() {
             @Override
