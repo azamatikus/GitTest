@@ -14,7 +14,6 @@ public class MyWindow extends JFrame {
 
         setLayout(new BorderLayout());   // выбор компоновщика элементов
 
-//        JTextArea jta = new JTextArea();
         JTextField field = new JTextField();
         JLabel jlab = new JLabel("Please enter your first message...", SwingConstants.LEFT);
         jlab.setVerticalAlignment(SwingConstants.TOP);
@@ -38,8 +37,6 @@ public class MyWindow extends JFrame {
                 field.setText(" ");
             }
         });
-
-
 
         setVisible(true);
 
