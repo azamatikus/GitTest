@@ -42,6 +42,10 @@ public class Phonebook {
     public static void main(String[] args) {
         Phonebook phonebook = new Phonebook();
         phonebook.addPhone("Маркиз", "123");
+        phonebook.addPhone("Маркиз", "1234567");
+        phonebook.addPhone("Карабас", "12345");
+
+        System.out.println(phonebook.getPhonesByName("Маркиз"));
     }
 }
 
