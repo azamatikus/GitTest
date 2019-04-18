@@ -8,9 +8,13 @@ public class Concurrency {
 
     public static void main(String[] args) {
 
+        System.out.println("Start");
+
         method1();
 
         method2();
+
+        System.out.println("End");
 
     }
 
@@ -22,12 +26,8 @@ public class Concurrency {
 
         long timeStart = System.currentTimeMillis();
 
-        System.out.println("Start");
 
-        for (int i = 0; i < SIZE; i++) {          // 4
-
-            arr[i] = (float) (arr[i] * Math.sin(0.2f + i / 5) * Math.cos(0.2f + i / 5) * Math.cos(0.4f + i / 2));
-        }
+       calculate(arr);
 
         System.out.println("Вычисление method1 заняло " + (System.currentTimeMillis() - timeStart) + " времени");
 
@@ -35,8 +35,6 @@ public class Concurrency {
 
 
         public static void method2() {
-
-        System.out.println("method2 begin");
 
         final int h = SIZE / 2;
         float[] a1 = new float[h];
@@ -53,10 +51,7 @@ public class Concurrency {
         Thread t1 = new Thread((new Runnable() {
             @Override
             public void run() {
-                for (int i = 0; i < a1.length; i++) {
-
-                    a1[i] = (float) (arr[i] * Math.sin(0.2f + i / 5) * Math.cos(0.2f + i / 5) * Math.cos(0.4f + i / 2));
-                }
+               calculate(a1);
             }
         }));
         t1.start();
@@ -64,22 +59,47 @@ public class Concurrency {
         Thread t2 = new Thread((new Runnable() {
             @Override
             public void run() {
-                for (int i = 0; i < a2.length; i++) {
-
-                    a2[i] = (float) (arr[i] * Math.sin(0.2f + i / 5) * Math.cos(0.2f + i / 5) * Math.cos(0.4f + i / 2));
-                }
+            calculate2(a2);
             }
         }));
 
         t2.start();
 
-        System.arraycopy(a1, 0, arr, 0, h);
+            try {
+                t1.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            try {
+                t2.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            System.arraycopy(a1, 0, arr, 0, h);
         System.arraycopy(a2, 0, arr, h, h);
 
         System.out.println("Вычисление method2 заняло " + (System.currentTimeMillis() - before) + " времени");
 
-        System.out.println("method2 end");
+    }
 
+    public static void calculate(float[] arr) {
+
+        for (int i = 0; i < arr.length; i++) {          // 4
+
+            arr[i] = (float) (arr[i] * Math.sin(0.2f + i / 5) * Math.cos(0.2f + i / 5) * Math.cos(0.4f + i / 2));
+        }
+    }
+
+    public static void calculate2 (float[] arr) {
+
+        for (int i = 0; i < arr.length; i++) {
+
+            int ix = SIZE/2 + i;
+            arr[i] = (float) (arr[i] * Math.sin(0.2f + ix / 5) * Math.cos(0.2f + ix / 5) * Math.cos(0.4f + ix / 2));
+
+//                    a2[i] = (float) (a2[i] * Math.sin(0.2f + i / 5) * Math.cos(0.2f + i / 5) * Math.cos(0.4f + i / 2));
+        }
     }
 
     }
