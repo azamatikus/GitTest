@@ -9,13 +9,9 @@ import java.time.format.DateTimeFormatter;
 public class TextMessageCellRenderer extends JPanel implements ListCellRenderer<TextMessage> {
 
     private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-
     private final JLabel created;
-
     private final JLabel userName;
-
     private final JTextArea messageText;
-
     private final JPanel panel;
 
     public TextMessageCellRenderer() {
@@ -47,7 +43,6 @@ public class TextMessageCellRenderer extends JPanel implements ListCellRenderer<
                                                   boolean isSelected, boolean cellHasFocus) {
         setBackground(list.getBackground());
         created.setText(value.getCreated().format(timeFormatter));
-        userName.setOpaque(true);
         userName.setText(value.getUserFrom());
         messageText.setText(value.getText());
         return this;

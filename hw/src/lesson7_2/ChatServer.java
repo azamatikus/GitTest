@@ -3,19 +3,23 @@ package lesson7_2;
 import lesson7_2.auth.AuthService;
 import lesson7_2.auth.AuthServiceImpl;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.       DataInputStream;
+import java.io.       DataOutputStream;
+import java.io.       IOException;
+import java.net.      ServerSocket;
+import java.net.      Socket;
+import java.util.     Collections;
+import java.util.     HashMap;
+import java.util.     Map;
+
+import static lesson7_2.MessagePatterns.*;
 
 public class ChatServer {
 
     private AuthService authService = new AuthServiceImpl();
     private Map<String, ClientHandler> clientHandlerMap = Collections.synchronizedMap(new HashMap<>());
+    Boolean wasHere = false;
+    private TextMessage msg;
 
     public static void main(String[] args) {
         ChatServer chatServer = new ChatServer();
@@ -23,6 +27,7 @@ public class ChatServer {
     }
 
     private void start(int port) {
+
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             System.out.println("Server started!");
             while (true) {
@@ -38,22 +43,41 @@ public class ChatServer {
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 } catch (AuthException ex) {
-                    out.writeUTF("/auth fails");
+                    out.writeUTF(AUTH_FAIL_RESPONSE);
                     out.flush();
                     socket.close();
                 }
-                if (user != null && authService.authUser(user)) {
-                    System.out.printf("User %s authorized successful!%n", user.getLogin());
-                    clientHandlerMap.put(user.getLogin(), new ClientHandler(user.getLogin(), socket, this));
-                    out.writeUTF("/auth successful");
-                    out.flush();
+
+                // TODOПроверить, подключен ли уже пользователь. Если да, то отправить клиенту ошибку
+
+                for (ClientHandler clientHandler : clientHandlerMap.values()) {
+                    if (user != null && clientHandler.getLogin().equals(user.getLogin())) {
+                        System.out.printf("Попытка User %s повторно подключится к чату%n", user.getLogin());
+                        out.writeUTF(AUTH_FAIL_RESPONSE);
+                        out.flush();
+                        wasHere = true;
+                    }else{
+                        wasHere = false;
+                    }
+                }
+
+                if (user != null && authService.authUser(user) && !wasHere) {
+//                if (user != null && authService.authUser(user)) {
+
+                        System.out.printf("User %s authorized successful!%n", user.getLogin());
+                        clientHandlerMap.put(user.getLogin(), new ClientHandler(user.getLogin(), socket, this));
+                        subscribe(user.getLogin(), socket);
+                        out.writeUTF(AUTH_SUCCESS_RESPONSE);
+                        out.flush();
+
                 } else {
                     if (user != null) {
                         System.out.printf("Wrong authorization for user %s%n", user.getLogin());
                     }
-                    out.writeUTF("/auth fails");
+                    out.writeUTF(AUTH_FAIL_RESPONSE);
                     out.flush();
                     socket.close();
+
                 }
             }
         } catch (IOException ex) {
@@ -70,9 +94,42 @@ public class ChatServer {
         return new User(authParts[1], authParts[2]);
     }
 
-    public void sendMessage(String userTo, String userFrom, String msg) {
-        ClientHandler userToClientHandler = clientHandlerMap.get(userTo);
-        // TODO убедиться, что userToClientHandler существует и отправить сообщение
-        // TODO для отправки сообщения нужно вызвать метод userToClientHandler.sendMessage()
+    private void sendUserConnectedMessage(String login) throws IOException {
+        for (ClientHandler clientHandler : clientHandlerMap.values()) {
+            if (!clientHandler.getLogin().equals(login)) {
+                System.out.printf("Sending connect notification to %s about %s%n", clientHandler.getLogin(), login);
+                clientHandler.sendConnectedMessage(login);
+            }
+        }
+    }
+
+    public void sendMessage(TextMessage msg) throws IOException {
+        ClientHandler userToClientHandler = clientHandlerMap.get(msg.getUserTo());
+        if (userToClientHandler != null) {
+            userToClientHandler.sendMessage(msg.getUserFrom(), msg.getText());
+        } else {
+            System.out.printf("User %s not connected%n", msg.getUserTo());
+        }
+    }
+
+
+    public void subscribe(String login, Socket socket) throws IOException {
+
+            clientHandlerMap.put(login, new ClientHandler(login, socket, this));
+            sendUserConnectedMessage(login);
+    }
+
+    public void unsubscribe(String login) throws IOException {
+
+        clientHandlerMap.remove(login);
+
+        // TODOОтправить всем подключенным пользователям сообщение, что данный пользователь отключился
+
+        String text =  "/w" + login + USER_DISCONNECTED;
+
+        for (ClientHandler clientHandler : clientHandlerMap.values()) {
+            msg = new TextMessage(login, clientHandler.getLogin(),  text);
+            sendMessage(msg);
+        }
     }
 }

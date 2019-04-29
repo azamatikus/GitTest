@@ -8,6 +8,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.IOException;
 
 public class MainWindow extends JFrame implements MessageReciever {
 
@@ -24,11 +27,14 @@ public class MainWindow extends JFrame implements MessageReciever {
     private final JButton sendButton;
 
     private final JTextField messageField;
+    private final JTextField userField;
+    private final JList<String> userList;
+    private final DefaultListModel<String> userListModel;
 
     private final Network network;
 
     public MainWindow() {
-        setTitle("Application");
+        setTitle("Сетевой чат.");
         setBounds(200,200, 500, 500);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -47,19 +53,20 @@ public class MainWindow extends JFrame implements MessageReciever {
 
         sendMessagePanel = new JPanel();
         sendMessagePanel.setLayout(new BorderLayout());
+
         sendButton = new JButton("Отправить");
         sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String text = messageField.getText();
+
+                // TODO отправлять сообщение пользователю выбранному в списке userList
+
+                String userTo = userField.getText();
                 if (text != null && !text.trim().isEmpty()) {
-                    TextMessage msg = new TextMessage(network.getLogin(), "ivan", text);
+                    TextMessage msg = new TextMessage(network.getLogin(), userTo, text);
                     messageListModel.add(messageListModel.size(), msg);
                     messageField.setText(null);
-
-                    // TODOреализовать проверку, что сообщение не пустое
-
-                    if (!text.isEmpty())
                     network.sendTextMessage(msg);
                 }
             }
@@ -68,8 +75,21 @@ public class MainWindow extends JFrame implements MessageReciever {
         messageField = new JTextField();
         sendMessagePanel.add(messageField, BorderLayout.CENTER);
 
+        userField = new JTextField("", 7);
+//        userField.setToolTipText("кому");
+        sendMessagePanel.add(userField, BorderLayout.WEST);
+
         add(sendMessagePanel, BorderLayout.SOUTH);
-        setVisible(true);
+
+        userList = new JList<>();
+        userListModel = new DefaultListModel<>();
+        userList.setModel(userListModel);
+        userList.setPreferredSize(new Dimension(100, 0));
+        add(userList, BorderLayout.WEST);
+
+        //////////////////////////////////////
+                  setVisible(true);///////////
+        //////////////////////////////////////
 
         this.network = new Network("localhost", 7777, this);
 
@@ -79,6 +99,22 @@ public class MainWindow extends JFrame implements MessageReciever {
         if (!loginDialog.isConnected()) {
             System.exit(0);
         }
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e){
+                if (network != null) {
+                    try {
+                        network.close();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+                super.windowClosing(e);
+            }
+        });
+
+        setTitle("Сетевой чат. Пользователь " + network.getLogin());
     }
 
     @Override
@@ -87,7 +123,33 @@ public class MainWindow extends JFrame implements MessageReciever {
             @Override
             public void run() {
                 messageListModel.add(messageListModel.size(), message);
-                messageList.ensureIndexIsVisible(messageListModel.size() - 1);
+                messageList.ensureIndexIsVisible(messageListModel.size() - 1); //.ensureIndexIsVisible ??
+            }
+        });
+    }
+
+    @Override
+    public void userConnected(String login) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                int ix = userListModel.indexOf(login);
+                if (ix == -1) {
+                    userListModel.add(userListModel.size(), login);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void userDisconnected(String login) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                int ix = userListModel.indexOf(login);
+                if (ix >= 0) {
+                    userListModel.remove(ix);
+                }
             }
         });
     }
