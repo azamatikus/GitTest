@@ -5,7 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-import static lesson7_2.MessagePatterns.MESSAGE_SEND_PATTERN;
+import static lesson7_2.MessagePatterns.*;
 
 public class ClientHandler {
 
@@ -28,15 +28,19 @@ public class ClientHandler {
             public void run() {
                 while (!Thread.currentThread().isInterrupted()) {
                     try {
-                        String msg = inp.readUTF();
-                        System.out.printf("Message from user %s: %s%n", login, msg);
+                        String text = inp.readUTF();
+                        System.out.printf("Message from user %s: %s%n", login, text);
 
-                        // TODO проверить является ли msg сообщением для пользователя
-                        // TODO если да, то переслать это сообщение пользователю
-                        String userTo = "";
-                        String message = "";
-                        sendMessage(userTo, message);
-                        chatServer.sendMessage(userTo, login, message);
+                        System.out.println("New message " + text);
+                        TextMessage msg = parseTextMessageRegx(text, login);
+                        if (msg != null) {
+                            msg.swapUsers();
+                            chatServer.sendMessage(msg);
+                        } else if (text.equals(DISCONNECT)) {
+                            System.out.printf("User %s is disconnected%n", login);
+                            chatServer.unsubscribe(login);
+                            return;
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                         break;
@@ -50,9 +54,18 @@ public class ClientHandler {
 
     public String getLogin() {
         return login;
+
     }
 
-    public void sendMessage(String userTo, String msg) throws IOException {
-        out.writeUTF(String.format(MESSAGE_SEND_PATTERN, userTo, msg));
+    public void sendMessage(String userFrom, String msg) throws IOException {
+        if (socket.isConnected()) {
+            out.writeUTF(String.format(MESSAGE_SEND_PATTERN, userFrom, msg));
+        }
+    }
+
+    public void sendConnectedMessage(String login) throws IOException {
+        if (socket.isConnected()) {
+            out.writeUTF(String.format(CONNECTED_SEND, login));
+        }
     }
 }
