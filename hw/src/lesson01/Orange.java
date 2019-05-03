@@ -1,6 +1,6 @@
 package lesson01;
 
-public class Orange <T> extends Fruit{
+public class Orange <T> extends Fruit {
 
     private Float weight = 1.5f;
 

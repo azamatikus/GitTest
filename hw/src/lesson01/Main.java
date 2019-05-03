@@ -17,13 +17,13 @@ public class Main {
 
         //Большая задача:
 
-        Box <Integer> appleBox = new Box<>(1.0f);
-        Box <String> orangeBox = new Box<>(1.5f);
+        Box<Integer> appleBox = new Box<>(1.0f);
+        Box<String> orangeBox = new Box<>(1.5f);
 
-        Apple <Integer>  apple1 = new Apple<>();
+        Apple<Integer> apple1 = new Apple<>();
 
-        Orange <String> orange1 = new Orange<>();
-        Orange <String> orange2 = new Orange<>();
+        Orange<String> orange1 = new Orange<>();
+        Orange<String> orange2 = new Orange<>();
 
         appleBox.addFruit(apple1);
         orangeBox.addFruit(orange1);
