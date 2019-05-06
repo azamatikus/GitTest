@@ -2,15 +2,10 @@ package hw01;
 
 import java.util.ArrayList;
 
-
-public class Box <T>{
+public class Box <T extends Fruit>{
 
     private ArrayList<T> list = new ArrayList<>();
-    private Float fruitWeight;
 
-    public Box(Float weight){
-        this.fruitWeight = weight;
-    }
 
     public void addFruit (T fruit){
 
@@ -21,14 +16,20 @@ public class Box <T>{
 
         float sum = 0;
 
-        for (int i=0; i<list.size(); i++){
-            sum += list[i].floatValue();
+        for (Fruit fr: list){
+            sum += fr.getWeight();
         }
-        return sum * fruitWeight;
+        return sum;
     }
 
     public boolean compare (Box<?> box) {
 
         return this.getWeight().equals(box.getWeight());
+    }
+
+    public void moveFromBox (Box<T> box) {
+
+        list.addAll(box.list);
+        box.list.clear();
     }
 }

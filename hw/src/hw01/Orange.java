@@ -1,11 +1,8 @@
 package hw01;
 
-public class Orange <T> extends Fruit {
+public class Orange extends Fruit {
 
-    private Float weight = 1.5f;
-
-    public Orange () {
-    }
+    Float weight = 1.5f;
 
     @Override
     public Float getWeight() {
