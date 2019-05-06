@@ -76,7 +76,7 @@ public class MainWindow extends JFrame implements MessageReciever {
         sendMessagePanel.add(messageField, BorderLayout.CENTER);
 
         userField = new JTextField("", 7);
-//        userField.setToolTipText("кому");
+        userField.setUI(new JTextFieldHintUI(" кому...", Color.gray)); //hint word
         sendMessagePanel.add(userField, BorderLayout.WEST);
 
         add(sendMessagePanel, BorderLayout.SOUTH);

@@ -34,19 +34,20 @@ public class Network implements Closeable {
                         String text = in.readUTF();
 
                         System.out.println("New message " + text);
-                        TextMessage msg = parseTextMessageRegx(text, login);
-                        if (msg != null) {
-                            messageReciever.submitMessage(msg);
-                            continue;
+
+//                        TextMessage msg = parseTextMessageRegx(text, login);
+//                        if (msg != null) {
+//                            messageReciever.submitMessage(msg);
+//                            continue;
+//                        }
+
+                        String[] messageParts = text.split(" ");
+                        if (messageParts.length != 3 || !messageParts[0].equals("/w")) {
+                            System.out.printf("Incorrect message type %s%n", text);
                         }
 
-//                        String[] messageParts = text.split(" ");
-//                        if (messageParts.length != 3 || !messageParts[0].equals("/w")) {
-//                            System.out.printf("Incorrect message type %s%n", text);
-//                        }
-//
-//                        TextMessage textMessage = new TextMessage(messageParts[1], login, messageParts[2]); //// TODOопределить текст и отправителя
-//                        messageReciever.submitMessage(textMessage);
+                        TextMessage textMessage = new TextMessage(messageParts[1], login, messageParts[2]); //// TODOопределить текст и отправителя
+                        messageReciever.submitMessage(textMessage);
 
                         System.out.println("Connection message " + text);
                         String login = parseConnectedMessage(text);
@@ -54,6 +55,8 @@ public class Network implements Closeable {
                             messageReciever.userConnected(login);
                             continue;
                         }
+
+                        messageReciever.userDisconnected(login);
 
                         // TODO добавить обработку отключения пользователя
 

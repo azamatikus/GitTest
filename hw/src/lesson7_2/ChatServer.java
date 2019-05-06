@@ -50,19 +50,19 @@ public class ChatServer {
 
                 // TODOПроверить, подключен ли уже пользователь. Если да, то отправить клиенту ошибку
 
-                for (ClientHandler clientHandler : clientHandlerMap.values()) {
-                    if (user != null && clientHandler.getLogin().equals(user.getLogin())) {
-                        System.out.printf("Попытка User %s повторно подключится к чату%n", user.getLogin());
-                        out.writeUTF(AUTH_FAIL_RESPONSE);
-                        out.flush();
-                        wasHere = true;
-                    }else{
-                        wasHere = false;
-                    }
-                }
+//                for (ClientHandler clientHandler : clientHandlerMap.values()) {
+//                    if (user != null && clientHandler.getLogin().equals(user.getLogin())) {
+//                        System.out.printf("Попытка User %s повторно подключится к чату%n", user.getLogin());
+//                        out.writeUTF(AUTH_FAIL_RESPONSE);
+//                        out.flush();
+//                        wasHere = true;
+//                    }else{
+//                        wasHere = false;
+//                    }
+//                }
 
-                if (user != null && authService.authUser(user) && !wasHere) {
-//                if (user != null && authService.authUser(user)) {
+//                if (user != null && authService.authUser(user) && !wasHere) {
+                if (user != null && authService.authUser(user)) {
 
                         System.out.printf("User %s authorized successful!%n", user.getLogin());
                         clientHandlerMap.put(user.getLogin(), new ClientHandler(user.getLogin(), socket, this));
