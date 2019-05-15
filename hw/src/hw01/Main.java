@@ -1,7 +1,6 @@
 package hw01;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class Main {
 
@@ -17,13 +16,13 @@ public class Main {
 
         //Большая задача:
 
-        Box<Integer> appleBox = new Box<>(1.0f);
-        Box<String> orangeBox = new Box<>(1.5f);
+        Box <Fruit> appleBox = new Box<>();
+        Box <Fruit> orangeBox = new Box<>();
 
-        Apple<Integer> apple1 = new Apple<>();
+        Apple apple1 = new Apple();
 
-        Orange<String> orange1 = new Orange<>();
-        Orange<String> orange2 = new Orange<>();
+        Orange orange1 = new Orange();
+        Orange orange2 = new Orange();
 
         appleBox.addFruit(apple1);
         orangeBox.addFruit(orange1);
@@ -40,7 +39,11 @@ public class Main {
 
     //Написать метод, который преобразует массив в ArrayList
 
-    public static <T> void toList (T [] array) {
-        List <T> list = Arrays.asList(array);
+    public static <T> List<T> toList (T [] array) {
+//        List <T> list = Arrays.asList(array);
+        List <T> list = new ArrayList<>();
+        Collections.addAll(list, array);
+
+        return list;
     }
  }

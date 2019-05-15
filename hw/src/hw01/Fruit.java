@@ -1,11 +1,8 @@
 package hw01;
 
-public class Fruit<T> {
+public class Fruit{
 
-    private Float weight;
-
-    public Fruit () {
-    }
+    Float weight;
 
     public Float getWeight() {
         return weight;
