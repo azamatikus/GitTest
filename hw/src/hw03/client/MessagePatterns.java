@@ -1,4 +1,4 @@
-package hw02.client;
+package hw03.client;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -1,6 +1,6 @@
-package hw02.server.auth;
+package hw03.server.auth;
 
-import hw02.server.User;
+import hw03.server.User;
 
 public interface AuthService {
 

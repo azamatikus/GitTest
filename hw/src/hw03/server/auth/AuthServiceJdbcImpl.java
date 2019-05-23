@@ -1,7 +1,7 @@
-package hw02.server.auth;
+package hw03.server.auth;
 
-import hw02.server.User;
-import hw02.server.persistance.UserRepository;
+import hw03.server.User;
+import hw03.server.persistance.UserRepository;
 
 import java.sql.SQLException;
 

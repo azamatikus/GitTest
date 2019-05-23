@@ -1,6 +1,6 @@
-package hw02.client.swing;
+package hw03.client.swing;
 
-import hw02.client.TextMessage;
+import hw03.client.TextMessage;
 
 import javax.swing.*;
 import java.awt.*;

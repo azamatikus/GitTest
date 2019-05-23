@@ -1,11 +1,10 @@
-package hw02.server;
+package hw03.server;
 
-import hw02.client.AuthException;
-import hw02.client.TextMessage;
-import hw02.server.auth.AuthService;
-import hw02.server.auth.AuthServiceImpl;
-import hw02.server.auth.AuthServiceJdbcImpl;
-import hw02.server.persistance.UserRepository;
+import hw03.client.AuthException;
+import hw03.client.TextMessage;
+import hw03.server.auth.AuthService;
+import hw03.server.auth.AuthServiceImpl;
+import hw03.server.persistance.UserRepository;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -17,7 +16,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.*;
 
-import static hw02.client.MessagePatterns.AUTH_FAIL_RESPONSE;
+import static hw03.client.MessagePatterns.AUTH_FAIL_RESPONSE;
 import static lesson7_2.MessagePatterns.AUTH_SUCCESS_RESPONSE;
 
 public class ChatServer {

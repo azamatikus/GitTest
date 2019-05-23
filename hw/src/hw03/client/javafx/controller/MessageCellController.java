@@ -1,7 +1,7 @@
-package hw02.client.javafx.controller;
+package hw03.client.javafx.controller;
 
 
-import hw02.client.TextMessage;
+import hw03.client.TextMessage;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;

@@ -1,6 +1,6 @@
-package hw02.server;
+package hw03.server;
 
-import hw02.client.TextMessage;
+import hw03.client.TextMessage;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.Set;
 
-import static hw02.client.MessagePatterns.*;
+import static hw03.client.MessagePatterns.*;
 
 
 public class ClientHandler {

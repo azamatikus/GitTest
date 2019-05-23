@@ -1,9 +1,9 @@
-package hw02.client.javafx.controller;
+package hw03.client.javafx.controller;
 
-import hw02.client.AuthException;
-import hw02.client.MessageReciever;
-import hw02.client.Network;
-import hw02.client.TextMessage;
+import hw03.client.AuthException;
+import hw03.client.MessageReciever;
+import hw03.client.Network;
+import hw03.client.TextMessage;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -78,7 +78,7 @@ public class Controller implements Initializable, MessageReciever {
         this.primaryStage = primaryStage;
     }
 
-    public void onSendMessageClicked() {
+    public void onSendMessageClicked() throws IOException {
         String text = tfMessage.getText();
         if (text != null && !text.isEmpty()) {
             String userTo = lvUserList.getSelectionModel().getSelectedItem();
