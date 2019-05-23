@@ -1,6 +1,6 @@
-package hw02.client.javafx;
+package hw03.client.javafx;
 
-import hw02.client.javafx.controller.Controller;
+import hw03.client.javafx.controller.Controller;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;

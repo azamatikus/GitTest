@@ -1,8 +1,9 @@
-package hw02.client.swing;
+package hw03.client.swing;
 
-import hw02.client.MessageReciever;
-import hw02.client.Network;
-import hw02.client.TextMessage;
+import hw03.client.HistoryKeeper;
+import hw03.client.MessageReciever;
+import hw03.client.Network;
+import hw03.client.TextMessage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.util.Set;
 
 public class ChatMainWindow extends JFrame implements MessageReciever {
@@ -33,6 +35,8 @@ public class ChatMainWindow extends JFrame implements MessageReciever {
     private final DefaultListModel<String> userListModel;
 
     private final Network network;
+//    private HistoryKeeper historyKeeper;
+
 
     public ChatMainWindow() {
         setTitle("Сетевой чат.");
@@ -71,7 +75,10 @@ public class ChatMainWindow extends JFrame implements MessageReciever {
                     TextMessage msg = new TextMessage(network.getLogin(), userTo, text);
                     messageListModel.add(messageListModel.size(), msg);
                     messageField.setText(null);
+
                     network.sendTextMessage(msg);
+
+
                 }
             }
         });
@@ -118,6 +125,12 @@ public class ChatMainWindow extends JFrame implements MessageReciever {
         SwingUtilities.invokeLater(() -> {
             messageListModel.add(messageListModel.size(), message);
             messageList.ensureIndexIsVisible(messageListModel.size() - 1);
+//            try {
+//                historyKeeper = new HistoryKeeper();
+//                historyKeeper.writer(message);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
         });
     }
 

@@ -1,6 +1,6 @@
-package hw02.server.persistance;
+package hw03.server.persistance;
 
-import hw02.server.User;
+import hw03.server.User;
 
 import java.sql.*;
 import java.util.ArrayList;

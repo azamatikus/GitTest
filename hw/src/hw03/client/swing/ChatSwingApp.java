@@ -1,4 +1,4 @@
-package hw02.client.swing;
+package hw03.client.swing;
 
 import javax.swing.*;
 

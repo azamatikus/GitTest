@@ -1,7 +1,7 @@
-package hw02.client.swing;
+package hw03.client.swing;
 
-import hw02.client.AuthException;
-import hw02.client.Network;
+import hw03.client.AuthException;
+import hw03.client.Network;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;

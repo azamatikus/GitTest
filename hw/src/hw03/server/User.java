@@ -1,4 +1,4 @@
-package hw02.server;
+package hw03.server;
 
 public class User {
 
