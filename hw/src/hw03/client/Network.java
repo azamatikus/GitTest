@@ -23,6 +23,9 @@ public class Network implements Closeable {
 
     private Thread receiverThread;
 
+    private HistoryKeeper historyKeeper;
+
+
 
     public Network(String hostName, int port, MessageReciever messageReciever) {
         this.hostName = hostName;
@@ -39,7 +42,14 @@ public class Network implements Closeable {
                     TextMessage msg = parseTextMessageRegx(text, login);
                     if (msg != null) {
                         messageReciever.submitMessage(msg);
-                        //
+
+//                        try {
+//                            historyKeeper = new HistoryKeeper();
+//                            historyKeeper.writer(message);
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+
                         continue;
                     }
 
@@ -88,6 +98,13 @@ public class Network implements Closeable {
 
     public void sendTextMessage(TextMessage message) {
         sendMessage(String.format(MESSAGE_SEND_PATTERN, message.getUserTo(), message.getText()));
+
+        try {
+            historyKeeper = new HistoryKeeper();  // решил встатвить именно сюда. хотя можно и еще в три места
+            historyKeeper.writer(message);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
