@@ -3,6 +3,7 @@ package hw02.server;
 import hw02.client.AuthException;
 import hw02.client.TextMessage;
 import hw02.server.auth.AuthService;
+import hw02.server.auth.AuthServiceImpl;
 import hw02.server.auth.AuthServiceJdbcImpl;
 import hw02.server.persistance.UserRepository;
 
@@ -37,7 +38,8 @@ public class ChatServer {
                 userRepository.insert(new User(-1, "petr", "345"));
                 userRepository.insert(new User(-1, "julia", "789"));
             }
-            authService = new AuthServiceJdbcImpl(userRepository);
+            //authService = new AuthServiceJdbcImpl(userRepository);
+            authService = new AuthServiceImpl();
         } catch (SQLException e) {
             e.printStackTrace();
             return;

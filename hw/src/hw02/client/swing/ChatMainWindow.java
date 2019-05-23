@@ -115,50 +115,38 @@ public class ChatMainWindow extends JFrame implements MessageReciever {
 
     @Override
     public void submitMessage(TextMessage message) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                messageListModel.add(messageListModel.size(), message);
-                messageList.ensureIndexIsVisible(messageListModel.size() - 1);
-            }
+        SwingUtilities.invokeLater(() -> {
+            messageListModel.add(messageListModel.size(), message);
+            messageList.ensureIndexIsVisible(messageListModel.size() - 1);
         });
     }
 
     @Override
     public void userConnected(String login) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                int ix = userListModel.indexOf(login);
-                if (ix == -1) {
-                    userListModel.add(userListModel.size(), login);
-                }
+        SwingUtilities.invokeLater(() -> {
+            int ix = userListModel.indexOf(login);
+            if (ix == -1) {
+                userListModel.add(userListModel.size(), login);
             }
         });
     }
 
     @Override
     public void userDisconnected(String login) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                int ix = userListModel.indexOf(login);
-                if (ix >= 0) {
-                    userListModel.remove(ix);
-                }
+        SwingUtilities.invokeLater(() -> {
+            int ix = userListModel.indexOf(login);
+            if (ix >= 0) {
+                userListModel.remove(ix);
             }
         });
     }
 
     @Override
     public void updateUserList(Set<String> users) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                userListModel.clear();
-                for (String usr : users) {
-                    userListModel.addElement(usr);
-                }
+        SwingUtilities.invokeLater(() -> {
+            userListModel.clear();
+            for (String usr : users) {
+                userListModel.addElement(usr);
             }
         });
     }
