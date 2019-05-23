@@ -1,6 +1,5 @@
 package hw03.client.swing;
 
-import hw03.client.HistoryKeeper;
 import hw03.client.MessageReciever;
 import hw03.client.Network;
 import hw03.client.TextMessage;
@@ -125,12 +124,7 @@ public class ChatMainWindow extends JFrame implements MessageReciever {
         SwingUtilities.invokeLater(() -> {
             messageListModel.add(messageListModel.size(), message);
             messageList.ensureIndexIsVisible(messageListModel.size() - 1);
-//            try {
-//                historyKeeper = new HistoryKeeper();
-//                historyKeeper.writer(message);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
+            //
         });
     }
 
