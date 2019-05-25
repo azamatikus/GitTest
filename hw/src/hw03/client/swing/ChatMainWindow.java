@@ -36,7 +36,7 @@ public class ChatMainWindow extends JFrame implements MessageReciever {
 
     private final Network network;
 
-//    private HistoryKeeper historyKeeper;
+    private HistoryKeeper historyKeeper;
 
 
     public ChatMainWindow() {
@@ -119,6 +119,15 @@ public class ChatMainWindow extends JFrame implements MessageReciever {
         });
 
         setTitle("Сетевой чат. Пользователь " + network.getLogin());
+
+        try {
+            historyKeeper = new HistoryKeeper();
+            TextMessage historyMsgs = historyKeeper.reader(network.getLogin());
+            messageListModel.add(0, historyMsgs);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

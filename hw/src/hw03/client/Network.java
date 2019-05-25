@@ -31,6 +31,7 @@ public class Network implements Closeable {
         this.hostName = hostName;
         this.port = port;
         this.messageReciever = messageReciever;
+        this.historyKeeper = new HistoryKeeper();
 
         this.receiverThread = new Thread(() -> {
 
@@ -100,7 +101,6 @@ public class Network implements Closeable {
         sendMessage(String.format(MESSAGE_SEND_PATTERN, message.getUserTo(), message.getText()));
 
         try {
-            historyKeeper = new HistoryKeeper();  // решил встатвить именно сюда. хотя можно и еще в три места
             historyKeeper.writer(message);
         } catch (IOException e) {
             e.printStackTrace();

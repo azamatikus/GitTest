@@ -38,5 +38,14 @@ public class ReaderWriterDemo {
             writer.println("Строка 2");
             writer.println("Строка 3");
         }
-    }
+
+                try (RandomAccessFile raf = new RandomAccessFile("history_ivan.txt", "r")) {
+                    raf.seek(5);
+                    System.out.println((char) raf.read());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+        }
+
 }
