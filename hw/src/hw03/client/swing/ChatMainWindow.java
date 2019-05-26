@@ -1,5 +1,6 @@
 package hw03.client.swing;
 
+import hw03.client.HistoryKeeper;
 import hw03.client.MessageReciever;
 import hw03.client.Network;
 import hw03.client.TextMessage;
@@ -34,7 +35,8 @@ public class ChatMainWindow extends JFrame implements MessageReciever {
     private final DefaultListModel<String> userListModel;
 
     private final Network network;
-//    private HistoryKeeper historyKeeper;
+
+    private HistoryKeeper historyKeeper;
 
 
     public ChatMainWindow() {
@@ -117,6 +119,15 @@ public class ChatMainWindow extends JFrame implements MessageReciever {
         });
 
         setTitle("Сетевой чат. Пользователь " + network.getLogin());
+
+        try {
+            historyKeeper = new HistoryKeeper();
+            TextMessage historyMsgs = historyKeeper.reader(network.getLogin());
+            messageListModel.add(0, historyMsgs);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -124,7 +135,12 @@ public class ChatMainWindow extends JFrame implements MessageReciever {
         SwingUtilities.invokeLater(() -> {
             messageListModel.add(messageListModel.size(), message);
             messageList.ensureIndexIsVisible(messageListModel.size() - 1);
-            //
+//            try {
+//                historyKeeper = new HistoryKeeper();
+//                historyKeeper.writer(message);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
         });
     }
 
