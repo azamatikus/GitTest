@@ -23,15 +23,11 @@ public class Network implements Closeable {
 
     private Thread receiverThread;
 
-    private HistoryKeeper historyKeeper;
-
-
 
     public Network(String hostName, int port, MessageReciever messageReciever) {
         this.hostName = hostName;
         this.port = port;
         this.messageReciever = messageReciever;
-        this.historyKeeper = new HistoryKeeper();
 
         this.receiverThread = new Thread(() -> {
 
@@ -43,13 +39,6 @@ public class Network implements Closeable {
                     TextMessage msg = parseTextMessageRegx(text, login);
                     if (msg != null) {
                         messageReciever.submitMessage(msg);
-
-//                        try {
-//                            historyKeeper = new HistoryKeeper();
-//                            historyKeeper.writer(message);
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
 
                         continue;
                     }
@@ -99,12 +88,6 @@ public class Network implements Closeable {
 
     public void sendTextMessage(TextMessage message) {
         sendMessage(String.format(MESSAGE_SEND_PATTERN, message.getUserTo(), message.getText()));
-
-        try {
-            historyKeeper.writer(message);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
     }
 
