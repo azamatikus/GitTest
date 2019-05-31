@@ -1,0 +1,5 @@
+2019-05-30 01:41	petr	ivan	hello
+2019-05-30 01:42	ivan	petr	hi
+2019-05-30 01:42	petr	ivan	hru?
+2019-05-30 01:42	ivan	petr	goed2019-05-30 02:00	petr	ivan	so?
+2019-05-30 02:00	ivan	petr	well...nth to say
