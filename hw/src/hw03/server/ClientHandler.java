@@ -22,6 +22,8 @@ public class ClientHandler
     private final Future<?>        handlerFuture;
     private final ChatServer       chatServer;
 
+    // krn3tglm
+
     private final BlockingDeque<String> messageQueue = new LinkedBlockingDeque<>();
 
     public ClientHandler(String login,
